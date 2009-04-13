@@ -10,9 +10,12 @@
 
 #import "GREAGLView.h"
 
+#include "chipmunk.h"
+
 @interface GRController : NSObject <UIAccelerometerDelegate, GREAGLViewDelegate> {
-  GREAGLView *view;
-  UIAccelerationValue accel;
+  UIAccelerationValue accel[3];
+  cpSpace *space;
+  cpBody *staticBody;
 }
 
 @end

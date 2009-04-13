@@ -9,13 +9,16 @@
 #import "GRAppDelegate.h"
 #import "GREAGLView.h"
 
+#include "chipmunk.h"
+
 @implementation GRAppDelegate
 
 @synthesize window;
 @synthesize glView;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
-    
+  cpInitChipmunk();
+  
 	glView.animationInterval = 1.0 / 60.0;
 	[glView startAnimation];
 }
