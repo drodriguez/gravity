@@ -19,8 +19,18 @@
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
   cpInitChipmunk();
   
+#if TARGET_IPHONE_SIMULATOR
+  [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+#endif
+  
 	glView.animationInterval = 1.0 / 60.0;
 	[glView startAnimation];
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application {
+#if TARGET_IPHONE_SIMULATOR
+  [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+#endif
 }
 
 

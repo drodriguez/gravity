@@ -227,9 +227,26 @@ drawCollisions(void *ptr, void *data)
   
   space->gravity = cpv(accel[0], accel[1]);
 #if TARGET_IPHONE_SIMULATOR
-  static cpFloat a = 0.0;
-  space->gravity = cpv(100.0*cos(-a), 100.0*sin(-a));
-  a += 0.01;
+  switch ([[UIDevice currentDevice] orientation]) {
+    case UIDeviceOrientationUnknown:
+    case UIDeviceOrientationPortrait:
+    case UIDeviceOrientationFaceUp:
+    case UIDeviceOrientationFaceDown:
+      space->gravity = cpv(0, -100);
+      break;
+    case UIDeviceOrientationPortraitUpsideDown:
+      space->gravity = cpv(0, 100);
+      break;
+    case UIDeviceOrientationLandscapeLeft:
+      space->gravity = cpv(-100, 0);
+      break;
+    case UIDeviceOrientationLandscapeRight:
+      space->gravity = cpv(100, 0);
+      break;
+  }
+  // static cpFloat a = 0.0;
+  // space->gravity = cpv(100.0*cos(-a), 100.0*sin(-a));
+  // a += 0.01;
 #endif
   cpSpaceStep(space, 1.0/60.0);
 }
