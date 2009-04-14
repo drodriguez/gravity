@@ -12,7 +12,16 @@
 #define kRenderingFrequency 60.0
 #define kFilteringFactor 0.1
 
-#define D2R(__ANGLE__) ((__ANGLE__) / 180.0 * M_PI)
+@interface GRController ()
+
+- (void)collisionBetween:(cpShape *)a
+                     and:(cpShape *)b
+                contacts:(cpContact *)contacts
+             numContacts:(int)numContacts
+              normalCoef:(cpFloat)normalCoef;
+
+@end
+
 
 static void GRCollisionPairFunc(cpShape *a, cpShape *b, cpContact *contacts, int numContacts, cpFloat normalCoef, void *data) {
   GRController *controller = (GRController *)data;
@@ -137,6 +146,7 @@ drawCollisions(void *ptr, void *data)
   
   space = cpSpaceNew();
   cpSpaceResizeStaticHash(space, 20.0, 999);
+  space->elasticIterations = 5;
   space->gravity = cpv(0, -100);
   
   cpBody *body;
@@ -151,19 +161,19 @@ drawCollisions(void *ptr, void *data)
   }; */
   
   shape = cpSegmentShapeNew(staticBody, cpv(-150, -220), cpv(-150, 200), 0.0f);
-  shape->e = 1.0; shape->u = 1.0;
+  shape->e = 0.99; shape->u = 1.0;
   cpSpaceAddStaticShape(space, shape);
   
   shape = cpSegmentShapeNew(staticBody, cpv(150, -220), cpv(150, 200), 0.0f);
-  shape->e = 1.0; shape->u = 1.0;
+  shape->e = 0.99; shape->u = 1.0;
   cpSpaceAddStaticShape(space, shape);
   
   shape = cpSegmentShapeNew(staticBody, cpv(-150, -220), cpv(150, -220), 0.0f);
-  shape->e = 1.0; shape->u = 1.0;
+  shape->e = 0.99; shape->u = 1.0;
   cpSpaceAddStaticShape(space, shape);
   
   shape = cpSegmentShapeNew(staticBody, cpv(-150, 200), cpv(150, 200), 0.0f);
-  shape->e = 1.0; shape->u = 1.0;
+  shape->e = 0.99; shape->u = 1.0;
   cpSpaceAddStaticShape(space, shape);
   
   /* for (int i = 0; i < 50; i++) {
@@ -185,7 +195,7 @@ drawCollisions(void *ptr, void *data)
 	body->p = cpv(0, 0);
 	cpSpaceAddBody(space, body);
 	shape = cpCircleShapeNew(body, 10.0, cpvzero);
-	shape->e = 0.0; shape->u = 1.5;
+	shape->e = 0.75; shape->u = 1.5;
 	// shape->collision_type = 1;
 	cpSpaceAddShape(space, shape);
   
@@ -216,7 +226,7 @@ drawCollisions(void *ptr, void *data)
 		cpArrayEach(space->arbiters, &drawCollisions, NULL);
 	} glEnd(); */
     
-  space->gravity = cpv(accel[0], accel[1]);
+  space->gravity = cpv(98.1*accel[0], 98.1*accel[1]);
 #if TARGET_IPHONE_SIMULATOR
   switch ([[UIDevice currentDevice] orientation]) {
     case UIDeviceOrientationUnknown:
