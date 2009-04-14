@@ -29,7 +29,7 @@ drawCircle(cpFloat x, cpFloat y, cpFloat r, cpFloat a)
 {
 	const int segs = 15;
 	const cpFloat coef = 2.0*M_PI/(cpFloat)segs;
-	cpFloat *v = malloc(sizeof(cpFloat)*2*(segs+1));
+	static GLfloat v[2*17];
   
   int n;
   for (n = 0; n <= segs; n++) {
@@ -41,9 +41,9 @@ drawCircle(cpFloat x, cpFloat y, cpFloat r, cpFloat a)
   v[2*n+1] = y;
   
   glVertexPointer(2, GL_FLOAT, 0, v);
-  glDrawArrays(GL_LINE_STRIP, 0, segs+1);
+  glDrawArrays(GL_LINE_STRIP, 0, 17);
   
-  free(v);
+  // free(v);
 }
 
 static void
@@ -142,31 +142,31 @@ drawCollisions(void *ptr, void *data)
   cpBody *body;
   cpShape *shape;
   
-  int num = 4;
+  /* int num = 4;
   cpVect verts[] = {
     cpv(-15, -15),
     cpv(-15, 15),
     cpv(15, 15),
     cpv(15, -15),
-  };
+  }; */
   
-  shape = cpSegmentShapeNew(staticBody, cpv(-160, -230), cpv(-160, 230), 0.0f);
+  shape = cpSegmentShapeNew(staticBody, cpv(-150, -220), cpv(-150, 200), 0.0f);
   shape->e = 1.0; shape->u = 1.0;
   cpSpaceAddStaticShape(space, shape);
   
-  shape = cpSegmentShapeNew(staticBody, cpv(160, -230), cpv(160, 230), 0.0f);
+  shape = cpSegmentShapeNew(staticBody, cpv(150, -220), cpv(150, 200), 0.0f);
   shape->e = 1.0; shape->u = 1.0;
   cpSpaceAddStaticShape(space, shape);
   
-  shape = cpSegmentShapeNew(staticBody, cpv(-160, -230), cpv(160, -230), 0.0f);
+  shape = cpSegmentShapeNew(staticBody, cpv(-150, -220), cpv(150, -220), 0.0f);
   shape->e = 1.0; shape->u = 1.0;
   cpSpaceAddStaticShape(space, shape);
   
-  shape = cpSegmentShapeNew(staticBody, cpv(-160, 230), cpv(160, 230), 0.0f);
+  shape = cpSegmentShapeNew(staticBody, cpv(-150, 200), cpv(150, 200), 0.0f);
   shape->e = 1.0; shape->u = 1.0;
   cpSpaceAddStaticShape(space, shape);
   
-  for (int i = 0; i < 50; i++) {
+  /* for (int i = 0; i < 50; i++) {
     int j = i+1;
     cpVect a = cpv(i*10 - 230, i*-10 + 160);
     cpVect b = cpv(j*10 - 230, i*-10 + 160);
@@ -179,14 +179,14 @@ drawCollisions(void *ptr, void *data)
 		shape = cpSegmentShapeNew(staticBody, b, c, 0.0f);
 		shape->e = 1.0; shape->u = 1.0;
 		cpSpaceAddStaticShape(space, shape);
-  }
+  } */
   
-  body = cpBodyNew(1.0, cpMomentForPoly(1.0, num, verts, cpvzero));
-	body->p = cpv(-135, 200);
+  body = cpBodyNew(1.0, cpMomentForCircle(1.0, 0.0, 10.0, cpvzero));
+	body->p = cpv(0, 0);
 	cpSpaceAddBody(space, body);
-	shape = cpPolyShapeNew(body, num, verts, cpvzero);
+	shape = cpCircleShapeNew(body, 10.0, cpvzero);
 	shape->e = 0.0; shape->u = 1.5;
-	shape->collision_type = 1;
+	// shape->collision_type = 1;
 	cpSpaceAddShape(space, shape);
   
   // cpSpaceAddCollisionPairFunc(space, 1, 0, &GRCollisionPairFunc, self);
@@ -215,16 +215,7 @@ drawCollisions(void *ptr, void *data)
 		glColor3f(1.0, 0.0, 0.0);
 		cpArrayEach(space->arbiters, &drawCollisions, NULL);
 	} glEnd(); */
-  
-  const GLfloat squareVertices[] = {
-          -0.5f, -0.5f,
-          0.5f,  -0.5f,
-          -0.5f,  0.5f,
-          0.5f,   0.5f,
-    };
-  glVertexPointer(2, GL_FLOAT, 0, squareVertices);
-  glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-  
+    
   space->gravity = cpv(accel[0], accel[1]);
 #if TARGET_IPHONE_SIMULATOR
   switch ([[UIDevice currentDevice] orientation]) {

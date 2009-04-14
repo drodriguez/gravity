@@ -29,10 +29,6 @@
 		657C6CBE0F93A4A80043A94A /* cpSpace.c in Sources */ = {isa = PBXBuildFile; fileRef = 657C6CAD0F93A4A80043A94A /* cpSpace.c */; };
 		657C6CBF0F93A4A80043A94A /* cpSpaceHash.c in Sources */ = {isa = PBXBuildFile; fileRef = 657C6CAF0F93A4A80043A94A /* cpSpaceHash.c */; };
 		657C6CC00F93A4A80043A94A /* cpVect.c in Sources */ = {isa = PBXBuildFile; fileRef = 657C6CB10F93A4A80043A94A /* cpVect.c */; };
-		657C6CE90F93C3520043A94A /* CPBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 657C6CE80F93C3520043A94A /* CPBody.m */; };
-		657C6CEC0F93CAE80043A94A /* CPSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = 657C6CEB0F93CAE80043A94A /* CPSpace.m */; };
-		657C6CEF0F93CE2C0043A94A /* CPShape.m in Sources */ = {isa = PBXBuildFile; fileRef = 657C6CEE0F93CE2C0043A94A /* CPShape.m */; };
-		657C6CF90F93D39D0043A94A /* CPCircleShape.m in Sources */ = {isa = PBXBuildFile; fileRef = 657C6CF80F93D39D0043A94A /* CPCircleShape.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -278,10 +274,6 @@
 				657C6CBE0F93A4A80043A94A /* cpSpace.c in Sources */,
 				657C6CBF0F93A4A80043A94A /* cpSpaceHash.c in Sources */,
 				657C6CC00F93A4A80043A94A /* cpVect.c in Sources */,
-				657C6CE90F93C3520043A94A /* CPBody.m in Sources */,
-				657C6CEC0F93CAE80043A94A /* CPSpace.m in Sources */,
-				657C6CEF0F93CE2C0043A94A /* CPShape.m in Sources */,
-				657C6CF90F93D39D0043A94A /* CPCircleShape.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
