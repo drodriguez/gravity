@@ -12,10 +12,15 @@
 
 #include "chipmunk.h"
 
+@class GRPoolTable;
+
 @interface GRController : NSObject <UIAccelerometerDelegate, GREAGLViewDelegate> {
   UIAccelerationValue accel[3];
   cpSpace *space;
   cpBody *staticBody;
+  
+  GRPoolTable *table;
+  NSMutableArray *balls;
 }
 
 @end

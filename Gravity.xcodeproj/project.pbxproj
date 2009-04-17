@@ -29,6 +29,13 @@
 		657C6CBE0F93A4A80043A94A /* cpSpace.c in Sources */ = {isa = PBXBuildFile; fileRef = 657C6CAD0F93A4A80043A94A /* cpSpace.c */; };
 		657C6CBF0F93A4A80043A94A /* cpSpaceHash.c in Sources */ = {isa = PBXBuildFile; fileRef = 657C6CAF0F93A4A80043A94A /* cpSpaceHash.c */; };
 		657C6CC00F93A4A80043A94A /* cpVect.c in Sources */ = {isa = PBXBuildFile; fileRef = 657C6CB10F93A4A80043A94A /* cpVect.c */; };
+		65E8F5D80F99333A00722733 /* GRSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E8F5D70F99333A00722733 /* GRSprite.m */; };
+		65E8F5DB0F99371A00722733 /* Texture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E8F5DA0F99371A00722733 /* Texture2D.m */; };
+		65E8F5DE0F993BEE00722733 /* GRPoolTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E8F5DD0F993BEE00722733 /* GRPoolTable.m */; };
+		65E8F5E00F99407600722733 /* pool-table.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 65E8F5DF0F99407600722733 /* pool-table.tiff */; };
+		65E8F64E0F9942AF00722733 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65E8F64D0F9942AF00722733 /* CoreGraphics.framework */; };
+		65E8F6A00F9945A600722733 /* GRBall.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E8F69F0F9945A600722733 /* GRBall.m */; };
+		65E8F6D80F99495B00722733 /* ball.png in Resources */ = {isa = PBXBuildFile; fileRef = 65E8F6D70F99495B00722733 /* ball.png */; };
 		65FA78800F94FCF000BB8C81 /* entl.plist in Resources */ = {isa = PBXBuildFile; fileRef = 65FA787F0F94FCF000BB8C81 /* entl.plist */; };
 /* End PBXBuildFile section */
 
@@ -74,14 +81,17 @@
 		657C6CB10F93A4A80043A94A /* cpVect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpVect.c; path = Chipmunk/cpVect.c; sourceTree = "<group>"; };
 		657C6CB20F93A4A80043A94A /* cpVect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cpVect.h; path = Chipmunk/cpVect.h; sourceTree = "<group>"; };
 		657C6CB30F93A4A80043A94A /* prime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = prime.h; path = Chipmunk/prime.h; sourceTree = "<group>"; };
-		657C6CE70F93C3520043A94A /* CPBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPBody.h; sourceTree = "<group>"; };
-		657C6CE80F93C3520043A94A /* CPBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPBody.m; sourceTree = "<group>"; };
-		657C6CEA0F93CAE80043A94A /* CPSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPSpace.h; sourceTree = "<group>"; };
-		657C6CEB0F93CAE80043A94A /* CPSpace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPSpace.m; sourceTree = "<group>"; };
-		657C6CED0F93CE2C0043A94A /* CPShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPShape.h; sourceTree = "<group>"; };
-		657C6CEE0F93CE2C0043A94A /* CPShape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPShape.m; sourceTree = "<group>"; };
-		657C6CF70F93D39D0043A94A /* CPCircleShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPCircleShape.h; sourceTree = "<group>"; };
-		657C6CF80F93D39D0043A94A /* CPCircleShape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPCircleShape.m; sourceTree = "<group>"; };
+		65E8F5D60F99333A00722733 /* GRSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRSprite.h; sourceTree = "<group>"; };
+		65E8F5D70F99333A00722733 /* GRSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRSprite.m; sourceTree = "<group>"; };
+		65E8F5D90F99371A00722733 /* Texture2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture2D.h; sourceTree = "<group>"; };
+		65E8F5DA0F99371A00722733 /* Texture2D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Texture2D.m; sourceTree = "<group>"; };
+		65E8F5DC0F993BEE00722733 /* GRPoolTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRPoolTable.h; sourceTree = "<group>"; };
+		65E8F5DD0F993BEE00722733 /* GRPoolTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRPoolTable.m; sourceTree = "<group>"; };
+		65E8F5DF0F99407600722733 /* pool-table.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "pool-table.tiff"; sourceTree = "<group>"; };
+		65E8F64D0F9942AF00722733 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		65E8F69E0F9945A600722733 /* GRBall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRBall.h; sourceTree = "<group>"; };
+		65E8F69F0F9945A600722733 /* GRBall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRBall.m; sourceTree = "<group>"; };
+		65E8F6D70F99495B00722733 /* ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball.png; sourceTree = "<group>"; };
 		65FA787F0F94FCF000BB8C81 /* entl.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = entl.plist; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -95,6 +105,7 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */,
 				28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */,
+				65E8F64E0F9942AF00722733 /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,14 +121,14 @@
 				1D3623250D0F684500981E51 /* GRAppDelegate.m */,
 				657C6C410F9395C20043A94A /* GRController.h */,
 				657C6C420F9395C20043A94A /* GRController.m */,
-				657C6CE70F93C3520043A94A /* CPBody.h */,
-				657C6CE80F93C3520043A94A /* CPBody.m */,
-				657C6CEA0F93CAE80043A94A /* CPSpace.h */,
-				657C6CEB0F93CAE80043A94A /* CPSpace.m */,
-				657C6CED0F93CE2C0043A94A /* CPShape.h */,
-				657C6CEE0F93CE2C0043A94A /* CPShape.m */,
-				657C6CF70F93D39D0043A94A /* CPCircleShape.h */,
-				657C6CF80F93D39D0043A94A /* CPCircleShape.m */,
+				65E8F5D60F99333A00722733 /* GRSprite.h */,
+				65E8F5D70F99333A00722733 /* GRSprite.m */,
+				65E8F5D90F99371A00722733 /* Texture2D.h */,
+				65E8F5DA0F99371A00722733 /* Texture2D.m */,
+				65E8F5DC0F993BEE00722733 /* GRPoolTable.h */,
+				65E8F5DD0F993BEE00722733 /* GRPoolTable.m */,
+				65E8F69E0F9945A600722733 /* GRBall.h */,
+				65E8F69F0F9945A600722733 /* GRBall.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -155,6 +166,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				65E8F6D70F99495B00722733 /* ball.png */,
+				65E8F5DF0F99407600722733 /* pool-table.tiff */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				65FA787F0F94FCF000BB8C81 /* entl.plist */,
@@ -165,6 +178,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				65E8F64D0F9942AF00722733 /* CoreGraphics.framework */,
 				28FD15070DC6FC5B0079059D /* QuartzCore.framework */,
 				28FD14FF0DC6FC520079059D /* OpenGLES.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
@@ -251,6 +265,8 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				65FA78800F94FCF000BB8C81 /* entl.plist in Resources */,
+				65E8F5E00F99407600722733 /* pool-table.tiff in Resources */,
+				65E8F6D80F99495B00722733 /* ball.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,6 +294,10 @@
 				657C6CBE0F93A4A80043A94A /* cpSpace.c in Sources */,
 				657C6CBF0F93A4A80043A94A /* cpSpaceHash.c in Sources */,
 				657C6CC00F93A4A80043A94A /* cpVect.c in Sources */,
+				65E8F5D80F99333A00722733 /* GRSprite.m in Sources */,
+				65E8F5DB0F99371A00722733 /* Texture2D.m in Sources */,
+				65E8F5DE0F993BEE00722733 /* GRPoolTable.m in Sources */,
+				65E8F6A00F9945A600722733 /* GRBall.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

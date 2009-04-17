@@ -7,6 +7,8 @@
 //
 
 #import "GRController.h"
+#import "GRPoolTable.h"
+#import "GRBall.h"
 
 #define kAccelerometerFrequency 100.0
 #define kRenderingFrequency 60.0
@@ -33,110 +35,6 @@ static void GRCollisionPairFunc(cpShape *a, cpShape *b, cpContact *contacts, int
                     normalCoef:normalCoef]; 
 }
 
-static void
-drawCircle(cpFloat x, cpFloat y, cpFloat r, cpFloat a)
-{
-	const int segs = 15;
-	const cpFloat coef = 2.0*M_PI/(cpFloat)segs;
-	static GLfloat v[2*17];
-  
-  int n;
-  for (n = 0; n <= segs; n++) {
-    cpFloat rads = n*coef;
-    v[2*n] = r*cos(rads + a) + x;
-    v[2*n + 1] = r*sin(rads + a) + y;
-  }
-  v[2*n] = x;
-  v[2*n+1] = y;
-  
-  glVertexPointer(2, GL_FLOAT, 0, v);
-  glDrawArrays(GL_LINE_STRIP, 0, 17);
-  
-  // free(v);
-}
-
-static void
-drawCircleShape(cpShape *shape)
-{
-	cpBody *body = shape->body;
-	cpCircleShape *circle = (cpCircleShape *)shape;
-	cpVect c = cpvadd(body->p, cpvrotate(circle->c, body->rot));
-	drawCircle(c.x, c.y, circle->r, body->a);
-}
-
-static void
-drawSegmentShape(cpShape *shape)
-{
-	cpBody *body = shape->body;
-	cpSegmentShape *seg = (cpSegmentShape *)shape;
-	cpVect a = cpvadd(body->p, cpvrotate(seg->a, body->rot));
-	cpVect b = cpvadd(body->p, cpvrotate(seg->b, body->rot));
-	
-  GLfloat *v = malloc(sizeof(GLfloat)*2*2);
-  v[0] = a.x;
-  v[1] = a.y;
-  v[2] = b.x;
-  v[3] = b.y;
-  
-  glVertexPointer(2, GL_FLOAT, 0, v);
-  glDrawArrays(GL_LINES, 0, 2);
-  
-  free(v);
-}
-
-static void
-drawPolyShape(cpShape *shape)
-{
-	cpBody *body = shape->body;
-	cpPolyShape *poly = (cpPolyShape *)shape;
-	
-	int num = poly->numVerts;
-	cpVect *verts = poly->verts;
-	
-  GLfloat *v = malloc(sizeof(GLfloat)*2*num);
-  
-  int i;
-	for(i=0; i<num; i++){
-		cpVect p = cpvadd(body->p, cpvrotate(verts[i], body->rot));
-    v[2*i] = p.x;
-    v[2*i+1] = p.y;
-	}
-  
-  glVertexPointer(2, GL_FLOAT, 0, v);
-  glDrawArrays(GL_LINE_LOOP, 0, num);
-  
-  free(v);
-}
-
-static void
-drawObject(void *ptr, void *unused)
-{
-	cpShape *shape = (cpShape *)ptr;
-	switch(shape->klass->type){
-		case CP_CIRCLE_SHAPE:
-			drawCircleShape(shape);
-			break;
-		case CP_SEGMENT_SHAPE:
-			drawSegmentShape(shape);
-			break;
-		case CP_POLY_SHAPE:
-			drawPolyShape(shape);
-			break;
-		default:
-			NSLog(@"Bad enumeration in drawObject().");
-	}
-}
-
-/* static void
-drawCollisions(void *ptr, void *data)
-{
-	cpArbiter *arb = (cpArbiter *)ptr;
-	for(int i=0; i<arb->numContacts; i++){
-		cpVect v = arb->contacts[i].p;
-		glVertex2f(v.x, v.y);
-	}
-} */
-
 @implementation GRController
 
 - (void)awakeFromNib {
@@ -149,83 +47,32 @@ drawCollisions(void *ptr, void *data)
   space->elasticIterations = 5;
   space->gravity = cpv(0, -100);
   
-  cpBody *body;
-  cpShape *shape;
-  
-  /* int num = 4;
-  cpVect verts[] = {
-    cpv(-15, -15),
-    cpv(-15, 15),
-    cpv(15, 15),
-    cpv(15, -15),
-  }; */
-  
-  shape = cpSegmentShapeNew(staticBody, cpv(-150, -220), cpv(-150, 200), 0.0f);
-  shape->e = 0.99; shape->u = 1.0;
-  cpSpaceAddStaticShape(space, shape);
-  
-  shape = cpSegmentShapeNew(staticBody, cpv(150, -220), cpv(150, 200), 0.0f);
-  shape->e = 0.99; shape->u = 1.0;
-  cpSpaceAddStaticShape(space, shape);
-  
-  shape = cpSegmentShapeNew(staticBody, cpv(-150, -220), cpv(150, -220), 0.0f);
-  shape->e = 0.99; shape->u = 1.0;
-  cpSpaceAddStaticShape(space, shape);
-  
-  shape = cpSegmentShapeNew(staticBody, cpv(-150, 200), cpv(150, 200), 0.0f);
-  shape->e = 0.99; shape->u = 1.0;
-  cpSpaceAddStaticShape(space, shape);
-  
-  /* for (int i = 0; i < 50; i++) {
-    int j = i+1;
-    cpVect a = cpv(i*10 - 230, i*-10 + 160);
-    cpVect b = cpv(j*10 - 230, i*-10 + 160);
-    cpVect c = cpv(j*10 - 230, j*-10 + 160);
+  table = [[GRPoolTable alloc] initWithRect:CGRectMake(-160, -240, 320, 460)
+                                       body:staticBody
+                                      space:space];
+  balls = [[NSMutableArray alloc] initWithCapacity:1];
+  [balls addObject:[[[GRBall alloc] initAtPoint:CGPointMake(0, 0)
+                                          space:space] autorelease]];
     
-    shape = cpSegmentShapeNew(staticBody, a, b, 0.0f);
-		shape->e = 1.0; shape->u = 1.0;
-		cpSpaceAddStaticShape(space, shape);
-		
-		shape = cpSegmentShapeNew(staticBody, b, c, 0.0f);
-		shape->e = 1.0; shape->u = 1.0;
-		cpSpaceAddStaticShape(space, shape);
-  } */
-  
-  body = cpBodyNew(1.0, cpMomentForCircle(1.0, 0.0, 10.0, cpvzero));
-	body->p = cpv(0, 0);
-	cpSpaceAddBody(space, body);
-	shape = cpCircleShapeNew(body, 10.0, cpvzero);
-	shape->e = 0.75; shape->u = 1.5;
-	// shape->collision_type = 1;
-	cpSpaceAddShape(space, shape);
-  
-  // cpSpaceAddCollisionPairFunc(space, 1, 0, &GRCollisionPairFunc, self);
-  
   [[UIAccelerometer sharedAccelerometer] setUpdateInterval:(1.0 / kAccelerometerFrequency)];
   [[UIAccelerometer sharedAccelerometer] setDelegate:self];
+}
+
+- (void)dealloc {
+  [balls release];
+  [table release];
+  
+  [super dealloc];
 }
 
 - (void)drawView:(GREAGLView *)view {
   glClear(GL_COLOR_BUFFER_BIT);
   
-  glColor4f(0.0, 0.0, 0.0, 1.0);
-	cpSpaceHashEach(space->activeShapes, &drawObject, NULL);
-	cpSpaceHashEach(space->staticShapes, &drawObject, NULL);
-		
-	/* cpArray *bodies = space->bodies;
-	int num = bodies->num;
-	
-	glBegin(GL_POINTS); {
-		glColor3f(0.0, 0.0, 1.0);
-		for(int i=0; i<num; i++){
-			cpBody *body = (cpBody *)bodies->arr[i];
-			glVertex2f(body->p.x, body->p.y);
-		}
-		
-		glColor3f(1.0, 0.0, 0.0);
-		cpArrayEach(space->arbiters, &drawCollisions, NULL);
-	} glEnd(); */
-    
+  [table draw];
+  for (GRBall *ball in balls) {
+    [ball draw];
+  }
+  
   space->gravity = cpv(98.1*accel[0], 98.1*accel[1]);
 #if TARGET_IPHONE_SIMULATOR
   switch ([[UIDevice currentDevice] orientation]) {
@@ -245,9 +92,6 @@ drawCollisions(void *ptr, void *data)
       space->gravity = cpv(100, 0);
       break;
   }
-  // static cpFloat a = 0.0;
-  // space->gravity = cpv(100.0*cos(-a), 100.0*sin(-a));
-  // a += 0.01;
 #endif
   cpSpaceStep(space, 1.0/60.0);
 }
@@ -255,29 +99,16 @@ drawCollisions(void *ptr, void *data)
 - (void)setupView:(GREAGLView *)view {
   CGRect rect = view.bounds;
   glViewport(0, 0, rect.size.width, rect.size.height);
-  // const GLfloat matAmbient[] = {0.0, 0.0, 0.0, 1.0};
-  
-  glEnableClientState(GL_VERTEX_ARRAY);
-  
-  // glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, matAmbient);
-  
+      
   glClearColor(1.0, 1.0, 1.0, 0.0);
-  
-  // glPointSize(3.0);
-  
-  // glEnable(GL_LINE_SMOOTH);
-	// glEnable(GL_POINT_SMOOTH);
-	// glEnable(GL_BLEND);
-	// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	// glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
-	// glHint(GL_POINT_SMOOTH_HINT, GL_DONT_CARE);
-	// glLineWidth(2.5f);
-  
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
   
   const GLfloat left = -160.0, right = 160.0;
-  const GLfloat top = 230.0, bottom = -230.0;
+  const GLfloat top = 240.0, bottom = -240.0;
   const GLfloat zNear = -1.0, zFar = 1.0;
   
   glOrthof(left, right, bottom, top, zNear, zFar);
