@@ -9,10 +9,14 @@
 #import "GRController.h"
 #import "GRPoolTable.h"
 #import "GRBall.h"
+#import <mach/mach_time.h>
 
 #define kAccelerometerFrequency 100.0
 #define kRenderingFrequency 60.0
 #define kFilteringFactor 0.1
+
+#define RANDOM_SEED() srandom((unsigned)(mach_absolute_time() & 0xFFFFFFFF))
+#define RANDOM_FLOAT() ((float)random() / (float)INT32_MAX)
 
 @interface GRController ()
 
@@ -38,6 +42,7 @@ static void GRCollisionPairFunc(cpShape *a, cpShape *b, cpContact *contacts, int
 @implementation GRController
 
 - (void)awakeFromNib {
+  RANDOM_SEED();
   staticBody = cpBodyNew(INFINITY, INFINITY);
   
   cpResetShapeIdCounter();
@@ -50,10 +55,12 @@ static void GRCollisionPairFunc(cpShape *a, cpShape *b, cpContact *contacts, int
   table = [[GRPoolTable alloc] initWithRect:CGRectMake(-160, -240, 320, 460)
                                        body:staticBody
                                       space:space];
-  balls = [[NSMutableArray alloc] initWithCapacity:1];
-  [balls addObject:[[[GRBall alloc] initAtPoint:CGPointMake(0, 0)
-                                          space:space] autorelease]];
-    
+  balls = [[NSMutableArray alloc] initWithCapacity:5];
+  for (int i=0; i < 5; i++) {
+    [balls addObject:[[[GRBall alloc] initAtPoint:CGPointMake((RANDOM_FLOAT()-0.5)*260, (RANDOM_FLOAT()-0.5)*400)
+                                            space:space] autorelease]];
+  }
+  
   [[UIAccelerometer sharedAccelerometer] setUpdateInterval:(1.0 / kAccelerometerFrequency)];
   [[UIAccelerometer sharedAccelerometer] setDelegate:self];
 }
