@@ -66,8 +66,6 @@ static void GRCollisionPairFunc(cpShape *a, cpShape *b, cpContact *contacts, int
 }
 
 - (void)drawView:(GREAGLView *)view {
-  glClear(GL_COLOR_BUFFER_BIT);
-  
   [table draw];
   for (GRBall *ball in balls) {
     [ball draw];
@@ -99,10 +97,12 @@ static void GRCollisionPairFunc(cpShape *a, cpShape *b, cpContact *contacts, int
 - (void)setupView:(GREAGLView *)view {
   CGRect rect = view.bounds;
   glViewport(0, 0, rect.size.width, rect.size.height);
-      
-  glClearColor(1.0, 1.0, 1.0, 0.0);
+  
   glEnable(GL_BLEND);
   glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glEnable(GL_TEXTURE_2D);  
     
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();

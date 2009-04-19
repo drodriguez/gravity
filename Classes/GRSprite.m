@@ -27,18 +27,10 @@
 
 - (void)draw {
   glPushMatrix();
-  
+
   glTranslatef(self.posx, self.posy, 0.0);
-  
-  glEnableClientState(GL_VERTEX_ARRAY);
-  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-  glEnable(GL_TEXTURE_2D);
-  
+    
   [texture_ drawAtPoint:CGPointZero];
-  
-  glDisable(GL_TEXTURE_2D);
-  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-  glDisableClientState(GL_VERTEX_ARRAY);
   
   glPopMatrix();
 }

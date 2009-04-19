@@ -11,7 +11,7 @@
 @class Texture2D;
 
 @interface GRSprite : NSObject {
- @private
+ @protected
   Texture2D *texture_;
 }
 
