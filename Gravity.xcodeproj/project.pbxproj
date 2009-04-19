@@ -15,6 +15,7 @@
 		28FD14FE0DC6FC130079059D /* GREAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FD14FD0DC6FC130079059D /* GREAGLView.m */; };
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
 		28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
+		655ACEA90F9BBF5A00E1F55C /* pool-table.png in Resources */ = {isa = PBXBuildFile; fileRef = 655ACEA80F9BBF5A00E1F55C /* pool-table.png */; };
 		657C6C430F9395C20043A94A /* GRController.m in Sources */ = {isa = PBXBuildFile; fileRef = 657C6C420F9395C20043A94A /* GRController.m */; };
 		657C6CB40F93A4A80043A94A /* chipmunk.c in Sources */ = {isa = PBXBuildFile; fileRef = 657C6C990F93A4A80043A94A /* chipmunk.c */; };
 		657C6CB50F93A4A80043A94A /* cpArbiter.c in Sources */ = {isa = PBXBuildFile; fileRef = 657C6C9B0F93A4A80043A94A /* cpArbiter.c */; };
@@ -32,7 +33,6 @@
 		65E8F5D80F99333A00722733 /* GRSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E8F5D70F99333A00722733 /* GRSprite.m */; };
 		65E8F5DB0F99371A00722733 /* Texture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E8F5DA0F99371A00722733 /* Texture2D.m */; };
 		65E8F5DE0F993BEE00722733 /* GRPoolTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E8F5DD0F993BEE00722733 /* GRPoolTable.m */; };
-		65E8F5E00F99407600722733 /* pool-table.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 65E8F5DF0F99407600722733 /* pool-table.tiff */; };
 		65E8F64E0F9942AF00722733 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65E8F64D0F9942AF00722733 /* CoreGraphics.framework */; };
 		65E8F6A00F9945A600722733 /* GRBall.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E8F69F0F9945A600722733 /* GRBall.m */; };
 		65E8F6D80F99495B00722733 /* ball.png in Resources */ = {isa = PBXBuildFile; fileRef = 65E8F6D70F99495B00722733 /* ball.png */; };
@@ -52,6 +52,7 @@
 		28FD15070DC6FC5B0079059D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Gravity_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gravity_Prefix.pch; sourceTree = "<group>"; };
+		655ACEA80F9BBF5A00E1F55C /* pool-table.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pool-table.png"; sourceTree = "<group>"; };
 		657C6C410F9395C20043A94A /* GRController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRController.h; sourceTree = "<group>"; };
 		657C6C420F9395C20043A94A /* GRController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRController.m; sourceTree = "<group>"; };
 		657C6C990F93A4A80043A94A /* chipmunk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chipmunk.c; path = Chipmunk/chipmunk.c; sourceTree = "<group>"; };
@@ -87,7 +88,6 @@
 		65E8F5DA0F99371A00722733 /* Texture2D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Texture2D.m; sourceTree = "<group>"; };
 		65E8F5DC0F993BEE00722733 /* GRPoolTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRPoolTable.h; sourceTree = "<group>"; };
 		65E8F5DD0F993BEE00722733 /* GRPoolTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRPoolTable.m; sourceTree = "<group>"; };
-		65E8F5DF0F99407600722733 /* pool-table.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "pool-table.tiff"; sourceTree = "<group>"; };
 		65E8F64D0F9942AF00722733 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		65E8F69E0F9945A600722733 /* GRBall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRBall.h; sourceTree = "<group>"; };
 		65E8F69F0F9945A600722733 /* GRBall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRBall.m; sourceTree = "<group>"; };
@@ -166,8 +166,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				655ACEA80F9BBF5A00E1F55C /* pool-table.png */,
 				65E8F6D70F99495B00722733 /* ball.png */,
-				65E8F5DF0F99407600722733 /* pool-table.tiff */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				65FA787F0F94FCF000BB8C81 /* entl.plist */,
@@ -265,8 +265,8 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				65FA78800F94FCF000BB8C81 /* entl.plist in Resources */,
-				65E8F5E00F99407600722733 /* pool-table.tiff in Resources */,
 				65E8F6D80F99495B00722733 /* ball.png in Resources */,
+				655ACEA90F9BBF5A00E1F55C /* pool-table.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

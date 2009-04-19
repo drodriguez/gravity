@@ -15,7 +15,7 @@
 @implementation GRPoolTable
 
 - (id)initWithRect:(CGRect)rect body:(cpBody *)body space:(cpSpace *)space {
-  if (self = [super initWithFile:@"pool-table.tiff"]) {
+  if (self = [super initWithFile:@"pool-table.png"]) {
 #if !TARGET_IPHONE_SIMULATOR
     GLint					saveName;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &saveName);
