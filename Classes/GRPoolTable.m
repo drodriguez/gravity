@@ -7,6 +7,8 @@
 //
 
 #import "GRPoolTable.h"
+#import "Texture2D.h"
+#include <OpenGLES/ES1/gl.h>
 
 #define kMargin 30
 
@@ -14,6 +16,16 @@
 
 - (id)initWithRect:(CGRect)rect body:(cpBody *)body space:(cpSpace *)space {
   if (self = [super initWithFile:@"pool-table.tiff"]) {
+#if !TARGET_IPHONE_SIMULATOR
+    GLint					saveName;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &saveName);
+    glBindTexture(GL_TEXTURE_2D, texture_.name);
+      
+    GLint param[] = {0, 0, texture_.contentSize.width, texture_.contentSize.height};
+    glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_CROP_RECT_OES, param);
+    glBindTexture(GL_TEXTURE_2D, saveName);
+#endif    
+    
     rect_ = rect;
     
     int x0 = rect_.origin.x;
@@ -62,6 +74,13 @@
   // ??
   [super dealloc];
 }
+
+#if !TARGET_IPHONE_SIMULATOR
+- (void)draw {
+  glBindTexture(GL_TEXTURE_2D, texture_.name);
+  glDrawTexiOES(0, 0, 0.0, 320, 460);
+}
+#endif
 
 - (float)posx {
   return rect_.origin.x + rect_.size.width/2;
