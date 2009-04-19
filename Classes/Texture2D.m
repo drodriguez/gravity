@@ -1,24 +1,9 @@
 /*
  
- ===== IMPORTANT =====
- 
- This is sample code demonstrating API, technology or techniques in development.
- Although this sample code has been reviewed for technical accuracy, it is not
- final. Apple is supplying this information to help you plan for the adoption of
- the technologies and programming interfaces described herein. This information
- is subject to change, and software implemented based on this sample code should
- be tested with final operating system software and final documentation. Newer
- versions of this sample code may be provided with future seeds of the API or
- technology. For information about updates to this and other developer
- documentation, view the New & Updated sidebars in subsequent documentation
- seeds.
- 
- =====================
- 
  File: Texture2D.m
  Abstract: Creates OpenGL 2D textures from images or text.
  
- Version: 1.6
+ Version: 1.8
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple Inc.
  ("Apple") in consideration of your agreement to the following terms, and your
@@ -71,13 +56,10 @@
 
 //CLASS IMPLEMENTATIONS:
 
-// Default Min/Mag texture filter
-static ccTexParams _texParams = { GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE };
-static ccTexParams _texParamsCopy;
-
 @implementation Texture2D
 
 @synthesize contentSize=_size, pixelFormat=_format, pixelsWide=_width, pixelsHigh=_height, name=_name, maxS=_maxS, maxT=_maxT;
+
 - (id) initWithData:(const void*)data pixelFormat:(Texture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size
 {
 	GLint					saveName;
@@ -85,9 +67,7 @@ static ccTexParams _texParamsCopy;
 		glGenTextures(1, &_name);
 		glGetIntegerv(GL_TEXTURE_BINDING_2D, &saveName);
 		glBindTexture(GL_TEXTURE_2D, _name);
-    
-		[Texture2D applyTexParameters];
-		
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		switch(pixelFormat) {
         
 			case kTexture2DPixelFormat_RGBA8888:
@@ -117,11 +97,8 @@ static ccTexParams _texParamsCopy;
 
 - (void) dealloc
 {
-#if DEBUG
-	NSLog(@"deallocing %@", self);
-#endif
 	if(_name)
-		glDeleteTextures(1, &_name);
+    glDeleteTextures(1, &_name);
 	
 	[super dealloc];
 }
@@ -152,10 +129,12 @@ static ccTexParams _texParamsCopy;
 	CGSize					imageSize;
 	Texture2DPixelFormat    pixelFormat;
 	CGImageRef				image;
+	UIImageOrientation		orientation;
 	BOOL					sizeToFit = NO;
 	
 	
 	image = [uiImage CGImage];
+	orientation = [uiImage imageOrientation]; 
 	
 	if(image == NULL) {
 		[self release];
@@ -166,9 +145,8 @@ static ccTexParams _texParamsCopy;
   
 	info = CGImageGetAlphaInfo(image);
 	hasAlpha = ((info == kCGImageAlphaPremultipliedLast) || (info == kCGImageAlphaPremultipliedFirst) || (info == kCGImageAlphaLast) || (info == kCGImageAlphaFirst) ? YES : NO);
-	size_t bpp = CGImageGetBitsPerComponent(image);
 	if(CGImageGetColorSpace(image)) {
-		if(hasAlpha || bpp >= 8)
+		if(hasAlpha)
 			pixelFormat = kTexture2DPixelFormat_RGBA8888;
 		else
 			pixelFormat = kTexture2DPixelFormat_RGB565;
@@ -197,9 +175,9 @@ static ccTexParams _texParamsCopy;
 	while((width > kMaxTextureSize) || (height > kMaxTextureSize)) {
 		width /= 2;
 		height /= 2;
-		transform = CGAffineTransformScale(transform, 0.5f, 0.5f);
-		imageSize.width *= 0.5f;
-		imageSize.height *= 0.5f;
+		transform = CGAffineTransformScale(transform, 0.5, 0.5);
+		imageSize.width *= 0.5;
+		imageSize.height *= 0.5;
 	}
 	
 	switch(pixelFormat) {		
@@ -254,12 +232,6 @@ static ccTexParams _texParamsCopy;
 
 @implementation Texture2D (Text)
 
-- (id) initWithString:(NSString*)string fontName:(NSString*)name fontSize:(CGFloat)size
-{
-	CGSize dim = [string sizeWithFont: [UIFont fontWithName:name size:size]];
-	return [self initWithString:string dimensions:dim alignment:UITextAlignmentCenter fontName:name fontSize:size];
-}
-
 - (id) initWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(UITextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size
 {
 	NSUInteger				width,
@@ -271,7 +243,7 @@ static ccTexParams _texParamsCopy;
 	UIFont *				font;
 	
 	font = [UIFont fontWithName:name size:size];
-  
+	
 	width = dimensions.width;
 	if((width != 1) && (width & (width - 1))) {
 		i = 1;
@@ -293,9 +265,9 @@ static ccTexParams _texParamsCopy;
 	CGColorSpaceRelease(colorSpace);
 	
 	
-	CGContextSetGrayFillColor(context, 1.0f, 1.0f);
-	CGContextTranslateCTM(context, 0.0f, height);
-	CGContextScaleCTM(context, 1.0f, -1.0f); //NOTE: NSString draws in UIKit referential i.e. renders upside-down compared to CGBitmapContext referential
+	CGContextSetGrayFillColor(context, 1.0, 1.0);
+	CGContextTranslateCTM(context, 0.0, height);
+	CGContextScaleCTM(context, 1.0, -1.0); //NOTE: NSString draws in UIKit referential i.e. renders upside-down compared to CGBitmapContext referential
 	UIGraphicsPushContext(context);
   [string drawInRect:CGRectMake(0, 0, dimensions.width, dimensions.height) withFont:font lineBreakMode:UILineBreakModeWordWrap alignment:alignment];
 	UIGraphicsPopContext();
@@ -312,20 +284,20 @@ static ccTexParams _texParamsCopy;
 
 @implementation Texture2D (Drawing)
 
+
+
 - (void) drawAtPoint:(CGPoint)point 
 {
-	GLfloat		coordinates[] = { 0.0f,	_maxT,
+	GLfloat		coordinates[] = { 0,	_maxT,
     _maxS,	_maxT,
-    0.0f,	0.0f,
-  _maxS,	0.0f };
+    0,		0,
+  _maxS,	0 };
 	GLfloat		width = (GLfloat)_width * _maxS,
   height = (GLfloat)_height * _maxT;
-  
-	GLfloat		vertices[] = {
-    -width / 2 + point.x,	-height / 2 + point.y,	0.0f,
-     width / 2 + point.x,	-height / 2 + point.y,	0.0f,
-    -width / 2 + point.x,	 height / 2 + point.y,	0.0f,
-     width / 2 + point.x,	 height / 2 + point.y,	0.0f };
+	GLfloat		vertices[] = {	-width / 2 + point.x,	-height / 2 + point.y,	0.0,
+    width / 2 + point.x,	-height / 2 + point.y,	0.0,
+    -width / 2 + point.x,	height / 2 + point.y,	0.0,
+  width / 2 + point.x,	height / 2 + point.y,	0.0 };
 	
 	glBindTexture(GL_TEXTURE_2D, _name);
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
@@ -336,120 +308,19 @@ static ccTexParams _texParamsCopy;
 
 - (void) drawInRect:(CGRect)rect
 {
-	GLfloat	 coordinates[] = {  0.0f,	_maxT,
+	GLfloat	 coordinates[] = {  0,		_maxT,
     _maxS,	_maxT,
-    0.0f,	0.0f,
-  _maxS,	0.0f  };
-	GLfloat	vertices[] = {	rect.origin.x,							rect.origin.y,							/*0.0f,*/
-    rect.origin.x + rect.size.width,		rect.origin.y,							/*0.0f,*/
-    rect.origin.x,							rect.origin.y + rect.size.height,		/*0.0f,*/
-  rect.origin.x + rect.size.width,		rect.origin.y + rect.size.height,		/*0.0f*/ };
+    0,		0,
+  _maxS,	0  };
+	GLfloat	vertices[] = {	rect.origin.x,							rect.origin.y,							0.0,
+    rect.origin.x + rect.size.width,		rect.origin.y,							0.0,
+    rect.origin.x,							rect.origin.y + rect.size.height,		0.0,
+  rect.origin.x + rect.size.width,		rect.origin.y + rect.size.height,		0.0 };
 	
 	glBindTexture(GL_TEXTURE_2D, _name);
-	glVertexPointer(2, GL_FLOAT, 0, vertices);
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, coordinates);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 @end
-
-/*@implementation Texture2D (PVRTC)
--(id) initWithPVRTCData: (const void*)data level:(int)level bpp:(int)bpp hasAlpha:(BOOL)hasAlpha length:(int)length
-{
-	GLint					saveName;
-  
-	if((self = [super init])) {
-		glGenTextures(1, &_name);
-		glGetIntegerv(GL_TEXTURE_BINDING_2D, &saveName);
-		glBindTexture(GL_TEXTURE_2D, _name);
-    
-		[Texture2D applyTexParameters];
-		
-		GLenum format;
-		GLsizei size = length * length * bpp / 8;
-		if(hasAlpha) {
-			format = (bpp == 4) ? GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG : GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
-		} else {
-			format = (bpp == 4) ? GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG : GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
-		}
-		if(size < 32) {
-			size = 32;
-		}
-		glCompressedTexImage2D(GL_TEXTURE_2D, level, format, length, length, 0, size, data);
-		
-		glBindTexture(GL_TEXTURE_2D, saveName);
-		
-		_size = CGSizeMake(length, length);
-		_width = length;
-		_height = length;
-		_maxS = 1.0f;
-		_maxT = 1.0f;
-	}					
-	return self;
-}
-
--(id) initWithPVRTCFile: (NSString*) file
-{
-  
-	if( (self = [super init]) ) {
-		PVRTexture *pvr = [[PVRTexture alloc] initWithContentsOfFile:file];
-		pvr.retainName = YES;	// don't dealloc texture on release
-		
-		_name = pvr.name;	// texture id
-		_maxS = 1.0f;
-		_maxT = 1.0f;
-		_width = pvr.width;		// width
-		_height = pvr.height;	// height
-		_size = CGSizeMake(_width, _height);
-    
-		[pvr release];
-	}
-	return self;
-}
-@end*/
-
-//
-// Use to apply MIN/MAG filter
-//
-@implementation Texture2D (GLFilter)
-
-+(void) setTexParameters: (ccTexParams*) texParams
-{
-	_texParams = *texParams;
-}
-
-+(ccTexParams) texParameters
-{
-	return _texParams;
-}
-
-+(void) applyTexParameters
-{
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _texParams.minFilter );
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _texParams.magFilter );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _texParams.wrapS );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _texParams.wrapT );
-}
-
-+(void) restoreTexParameters
-{
-	_texParams = _texParamsCopy;
-}
-
-+(void) saveTexParameters
-{
-	_texParamsCopy = _texParams;
-}
-
-+(void) setAliasTexParameters
-{
-	_texParams.magFilter = _texParams.minFilter = GL_NEAREST;
-}
-
-+(void) setAntiAliasTexParameters
-{
-	_texParams.magFilter = _texParams.minFilter = GL_LINEAR;
-}
-
-@end
-
